@@ -54,3 +54,39 @@ def format_fasta(seq_id: str, description: str, sequence: str, line_width: int =
 
     return result
 
+def validate_positive_int(prompt: str, min_val: int = 1, max_val: int = 100_000) -> int:
+    """pobieram poprawną liczbę całkowitą"""
+    while True:
+        text = input(prompt)
+
+        if text.isdigit():
+            value = int(text)
+
+            if min_val <= value <= max_val:
+                return value
+
+        print(f"Błąd: wartość musi być liczbą całkowitą z zakresu [{min_val}, {max_val}].")
+
+
+def get_sequence_id() -> str:
+    """pobiera ID sekwencji bez białych znaków"""
+    while True:
+        seq_id = input("Podaj ID sekwencji: ")
+
+        if seq_id != "" and not any(char.isspace() for char in seq_id):
+            return seq_id
+
+        print("Błąd: ID nie może być puste ani zawierać białych znaków.")
+
+
+def find_motif(sequence: str, motif: str) -> list:
+    """wyszukuje motyw w sekwencji"""
+    positions = []
+    motif = motif.upper()
+
+    for i in range(len(sequence) - len(motif) + 1):
+        if sequence[i:i + len(motif)] == motif:
+            positions.append(i + 1)
+
+    return positions
+
