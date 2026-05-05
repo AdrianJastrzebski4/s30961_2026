@@ -123,3 +123,51 @@ def save_to_file(filename: str, content: str) -> None:
     with open(filename, "w", encoding="utf-8") as file:
         file.write(content)
         file.write("# EOF_1\n")
+
+        def main():
+            """główna funkcja programu"""
+
+            length = validate_positive_int("Podaj długość sekwencji: ")
+            seq_id = get_sequence_id()
+            description = input("Podaj opis sekwencji: ")
+            name = input("Podaj imię: ")
+
+            sequence = generate_sequence(length)
+            sequence_with_name = insert_name(sequence, name)
+
+            stats = calculate_stats(sequence)
+
+            motif = input("Podaj motyw do wyszukania, np. ATG: ")
+            motif_positions = find_motif(sequence, motif)
+
+            complement = make_complement(sequence)
+            reverse_complement = make_reverse_complement(sequence)
+            mrna = transcribe_to_mrna(sequence)
+
+            fasta_text = ""
+            fasta_text += format_fasta(seq_id, description, sequence_with_name)
+            fasta_text += format_fasta(seq_id + "_complement", "Sekwencja komplementarna", complement)
+            fasta_text += format_fasta(seq_id + "_reverse_complement", "Sekwencja odwrotnie komplementarna",
+                                       reverse_complement)
+            fasta_text += format_fasta(seq_id + "_mRNA", "Sekwencja mRNA", mrna)
+
+            filename = seq_id + ".fasta"
+            save_to_file(filename, fasta_text)
+
+            print(f"Sekwencja zapisana do pliku: {filename}")
+
+            print(f"Statystyki sekwencji (n={length}):")
+            print(f"A: {stats['A']:.2f}%")
+            print(f"C: {stats['C']:.2f}%")
+            print(f"G: {stats['G']:.2f}%")
+            print(f"T: {stats['T']:.2f}%")
+            print(f"GC-content: {stats['gc_ratio_A']:.2f}%")
+
+            print("Pozycje motywu:")
+            if motif_positions:
+                print(motif_positions)
+            else:
+                print("Nie znaleziono motywu.")
+
+        if __name__ == "__main__":
+            main()
