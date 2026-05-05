@@ -90,3 +90,36 @@ def find_motif(sequence: str, motif: str) -> list:
 
     return positions
 
+def make_complement(sequence: str) -> str:
+    """tworze sekwencję komplementarną"""
+    result = ""
+
+    for nucleotide in sequence:
+        if nucleotide == "A":
+            result += "T"
+        elif nucleotide == "T":
+            result += "A"
+        elif nucleotide == "C":
+            result += "G"
+        elif nucleotide == "G":
+            result += "C"
+
+    return result
+
+
+def make_reverse_complement(sequence: str) -> str:
+    """tworze sekwencję odwrotnie komplementarną"""
+    complement = make_complement(sequence)
+    return complement[::-1]
+
+
+def transcribe_to_mrna(sequence: str) -> str:
+    """tworzy sekwencję mRNA"""
+    return sequence.replace("T", "U")
+
+
+def save_to_file(filename: str, content: str) -> None:
+    """zapisuje dane do pliku"""
+    with open(filename, "w", encoding="utf-8") as file:
+        file.write(content)
+        file.write("# EOF_1\n")
