@@ -54,6 +54,7 @@ def format_fasta(seq_id: str, description: str, sequence: str, line_width: int =
 
     return result
 
+
 def validate_positive_int(prompt: str, min_val: int = 1, max_val: int = 100_000) -> int:
     """pobieram poprawną liczbę całkowitą"""
     while True:
@@ -90,6 +91,7 @@ def find_motif(sequence: str, motif: str) -> list:
 
     return positions
 
+
 def make_complement(sequence: str) -> str:
     """tworze sekwencję komplementarną"""
     result = ""
@@ -124,50 +126,51 @@ def save_to_file(filename: str, content: str) -> None:
         file.write(content)
         file.write("# EOF_1\n")
 
-        def main():
-            """główna funkcja programu"""
 
-            length = validate_positive_int("Podaj długość sekwencji: ")
-            seq_id = get_sequence_id()
-            description = input("Podaj opis sekwencji: ")
-            name = input("Podaj imię: ")
+def main():
+    """główna funkcja programu"""
 
-            sequence = generate_sequence(length)
-            sequence_with_name = insert_name(sequence, name)
+    length = validate_positive_int("Podaj długość sekwencji: ")
+    seq_id = get_sequence_id()
+    description = input("Podaj opis sekwencji: ")
+    name = input("Podaj imię: ")
 
-            stats = calculate_stats(sequence)
+    sequence = generate_sequence(length)
+    sequence_with_name = insert_name(sequence, name)
 
-            motif = input("Podaj motyw do wyszukania, np. ATG: ")
-            motif_positions = find_motif(sequence, motif)
+    stats = calculate_stats(sequence)
 
-            complement = make_complement(sequence)
-            reverse_complement = make_reverse_complement(sequence)
-            mrna = transcribe_to_mrna(sequence)
+    motif = input("Podaj motyw do wyszukania, np. ATG: ")
+    motif_positions = find_motif(sequence, motif)
 
-            fasta_text = ""
-            fasta_text += format_fasta(seq_id, description, sequence_with_name)
-            fasta_text += format_fasta(seq_id + "_complement", "Sekwencja komplementarna", complement)
-            fasta_text += format_fasta(seq_id + "_reverse_complement", "Sekwencja odwrotnie komplementarna",
-                                       reverse_complement)
-            fasta_text += format_fasta(seq_id + "_mRNA", "Sekwencja mRNA", mrna)
+    complement = make_complement(sequence)
+    reverse_complement = make_reverse_complement(sequence)
+    mrna = transcribe_to_mrna(sequence)
 
-            filename = seq_id + ".fasta"
-            save_to_file(filename, fasta_text)
+    fasta_text = ""
+    fasta_text += format_fasta(seq_id, description, sequence_with_name)
+    fasta_text += format_fasta(seq_id + "_complement", "Sekwencja komplementarna", complement)
+    fasta_text += format_fasta(seq_id + "_reverse_complement", "Sekwencja odwrotnie komplementarna", reverse_complement)
+    fasta_text += format_fasta(seq_id + "_mRNA", "Sekwencja mRNA", mrna)
 
-            print(f"Sekwencja zapisana do pliku: {filename}")
+    filename = seq_id + ".fasta"
+    save_to_file(filename, fasta_text)
 
-            print(f"Statystyki sekwencji (n={length}):")
-            print(f"A: {stats['A']:.2f}%")
-            print(f"C: {stats['C']:.2f}%")
-            print(f"G: {stats['G']:.2f}%")
-            print(f"T: {stats['T']:.2f}%")
-            print(f"GC-content: {stats['gc_ratio_A']:.2f}%")
+    print(f"Sekwencja zapisana do pliku: {filename}")
 
-            print("Pozycje motywu:")
-            if motif_positions:
-                print(motif_positions)
-            else:
-                print("Nie znaleziono motywu.")
+    print(f"Statystyki sekwencji (n={length}):")
+    print(f"A: {stats['A']:.2f}%")
+    print(f"C: {stats['C']:.2f}%")
+    print(f"G: {stats['G']:.2f}%")
+    print(f"T: {stats['T']:.2f}%")
+    print(f"GC-content: {stats['gc_ratio_A']:.2f}%")
 
-        if __name__ == "__main__":
-            main()
+    print("Pozycje motywu:")
+    if motif_positions:
+        print(motif_positions)
+    else:
+        print("Nie znaleziono motywu.")
+
+
+if __name__ == "__main__":
+    main()
