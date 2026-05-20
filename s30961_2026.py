@@ -30,7 +30,7 @@ def calculate_stats(sequence: str) -> dict:
         "C": c,
         "G": g,
         "T": t,
-        "gc_ratio_A": gc
+        "GC": gc
     }
 
 
@@ -124,7 +124,6 @@ def save_to_file(filename: str, content: str) -> None:
     """zapisuje dane do pliku"""
     with open(filename, "w", encoding="utf-8") as file:
         file.write(content)
-        file.write("# EOF_1\n")
 
 
 def main():
@@ -163,7 +162,7 @@ def main():
     print(f"C: {stats['C']:.2f}%")
     print(f"G: {stats['G']:.2f}%")
     print(f"T: {stats['T']:.2f}%")
-    print(f"GC-content: {stats['gc_ratio_A']:.2f}%")
+    print(f"GC-content: {stats['GC']:.2f}%")
 
     print("Pozycje motywu:")
     if motif_positions:
